@@ -5,6 +5,25 @@ using Newtonsoft.Json.Linq;
 
 Console.WriteLine("Honkai Impact 3rd Character Audio And Text Extract Tool");
 
+// config
+string ResultSavePath = "Result";
+string dataExtractPath = @"D:\AudioExtract\CharacterAudioAndText\data_extract";
+string txtAssetExtractPath = @"D:\AudioExtract\CharacterAudioAndText\setting_extract\TextAsset";
+string audioExtractPath = @"D:\AudioExtract\CharacterAudioAndText\Wwise-Unpacker\dest_wav";
+
+Console.WriteLine("Extraction Start...");
+
+ExportStep step = new ExportStep(ResultSavePath);
+
+step.CopyTargetTextJsonFile(dataExtractPath, txtAssetExtractPath);
+step.DialogDataExtract();
+step.RandomDialogDataExtract();
+step.PlotLineDataAkaTextMapDataExtract();
+step.AudioExtract(audioExtractPath);
+
+Console.WriteLine("Extraction End...");
+
+
 /*
 Console.WriteLine(HashHelper.GetHashCodeExcel("Textmap_ML29_PlotlineA01_01"));
 Console.WriteLine(HashHelper.GetHashCodeExcel("Textmap_ML32_PlotlineB_410302_04"));
@@ -18,16 +37,3 @@ Console.WriteLine(result2);
 
 return;
 */
-Console.WriteLine("Extraction Start...");
-
-ExportStep step = new ExportStep("Result");
-
-step.CopyTargetTextJsonFile(@"D:\AudioExtract\CharacterAudioAndText\data_extract",
-    @"D:\AudioExtract\CharacterAudioAndText\setting_extract\TextAsset");
-
-step.DialogDataExtract();
-step.RandomDialogDataExtract();
-step.PlotLineDataAkaTextMapDataExtract();
-step.AudioExtract("D:\\AudioExtract\\CharacterAudioAndText\\Wwise-Unpacker\\dest_wav");
-
-Console.WriteLine("Extraction End...");

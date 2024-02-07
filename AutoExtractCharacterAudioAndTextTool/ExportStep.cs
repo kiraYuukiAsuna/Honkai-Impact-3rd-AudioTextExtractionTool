@@ -12,7 +12,7 @@ public class ExportStep
 
     public bool CopyTargetTextJsonFile(string dataExtractionPath, string textAssetExtractionPath)
     {
-        /*if (!Path.Exists(dataExtractionPath))
+        if (!Path.Exists(dataExtractionPath))
         {
             Console.WriteLine("Data Extraction Path {0} do not exit!", dataExtractionPath);
             return false;
@@ -27,12 +27,14 @@ public class ExportStep
         if (Path.Exists(m_ResultSavePath))
         {
             Directory.GetFiles(m_ResultSavePath).ToList().ForEach(File.Delete);
-            Directory.Delete(m_ResultSavePath,true);
+            Directory.Delete(m_ResultSavePath, true);
         }
+
         Directory.CreateDirectory(m_ResultSavePath);
 
         CopyExtractionFile fileList = new CopyExtractionFile();
-        fileList.DataFilePath = new List<string>(){
+        fileList.DataFilePath = new List<string>()
+        {
             "DialogData.json",
             "RandomDialogData_cn.json",
             "RandomDialogData_en.json",
@@ -44,7 +46,7 @@ public class ExportStep
 
         foreach (var filePath in Directory.GetFiles(textAssetExtractionPath))
         {
-            JObject obj=new JObject();
+            JObject obj = new JObject();
             try
             {
                 obj = JObject.Parse(File.ReadAllText(filePath));
@@ -58,34 +60,33 @@ public class ExportStep
             {
                 fileList.AssetFilePath.Add(Path.GetFileName(filePath));
             }
-        }*/
+        }
 
         m_JsonResultPath = Path.Combine(m_ResultSavePath, "JsonResult");
         m_TextAssetPath = Path.Combine(m_ResultSavePath, "TextAsset");
         m_TextMapPath = Path.Combine(m_ResultSavePath, "TextMap");
-        /*
         Directory.CreateDirectory(m_JsonResultPath);
         Directory.CreateDirectory(m_TextAssetPath);
         Directory.CreateDirectory(m_TextMapPath);
-        */
 
-        /*var jsonResultTextMap = JsonConvert.SerializeObject(fileList.DataFilePath);
+        var jsonResultTextMap = JsonConvert.SerializeObject(fileList.DataFilePath);
         var jsonResultTextAsset = JsonConvert.SerializeObject(fileList.AssetFilePath);
 
-        var result = JsonConvert.SerializeObject(fileList,Formatting.Indented);
+        var result = JsonConvert.SerializeObject(fileList, Formatting.Indented);
 
-        File.WriteAllText(Path.Combine(m_JsonResultPath,"TargetFile.json"),result);
+        File.WriteAllText(Path.Combine(m_JsonResultPath, "TargetFile.json"), result);
 
         foreach (var dataFile in fileList.DataFilePath)
         {
-            File.Copy(Path.Combine(dataExtractionPath,dataFile),Path.Combine(m_TextMapPath,dataFile));
+            File.Copy(Path.Combine(dataExtractionPath, dataFile), Path.Combine(m_TextMapPath, dataFile));
         }
 
         foreach (var assetPath in fileList.AssetFilePath)
         {
-            File.Copy(Path.Combine(textAssetExtractionPath,assetPath),Path.Combine(m_TextAssetPath,assetPath));
+            File.Copy(Path.Combine(textAssetExtractionPath, assetPath), Path.Combine(m_TextAssetPath, assetPath));
         }
-        Console.WriteLine("Copy Ok");*/
+
+        Console.WriteLine("Copy Ok");
         return true;
     }
 
@@ -242,7 +243,7 @@ public class ExportStep
                                     if (clipObj.ContainsKey("DialogID"))
                                     {
                                         var dialogID = clipObj["DialogID"].Value<string>();
-                                        
+
                                         ExportJsonPlotlineData exportJsonPlotlineData = new ExportJsonPlotlineData();
                                         exportJsonPlotlineData.ActorNameID = actorNameID;
                                         exportJsonPlotlineData.ContentID = contentID;
@@ -276,21 +277,21 @@ public class ExportStep
                                     for (int i = 0; i < exportJsonPlotlineDataListSingleFile.List.Count; i++)
                                     {
                                         var dialogID = clipObj["DialogID"].Value<string>();
-                                        
-                                         var plotlineData = exportJsonPlotlineDataListSingleFile.List[i];
-                                         if (plotlineData.DialogID == dialogID)
-                                         {
-                                             ExportJsonPlotlineData exportJsonPlotlineData =
-                                                 new ExportJsonPlotlineData();
 
-                                             exportJsonPlotlineData.ActorNameID = plotlineData.ActorNameID;
-                                             exportJsonPlotlineData.ContentID = plotlineData.ContentID;
-                                             exportJsonPlotlineData.DialogID = plotlineData.DialogID;
-                                             exportJsonPlotlineData.DialogueAudioName = dialogAudioName;
-                                             exportJsonPlotlineData.ChatContent = plotlineData.DialogID;
-                                             exportJsonPlotlineDataListSingleFile.List[i] = exportJsonPlotlineData;
-                                             break;
-                                         }
+                                        var plotlineData = exportJsonPlotlineDataListSingleFile.List[i];
+                                        if (plotlineData.DialogID == dialogID)
+                                        {
+                                            ExportJsonPlotlineData exportJsonPlotlineData =
+                                                new ExportJsonPlotlineData();
+
+                                            exportJsonPlotlineData.ActorNameID = plotlineData.ActorNameID;
+                                            exportJsonPlotlineData.ContentID = plotlineData.ContentID;
+                                            exportJsonPlotlineData.DialogID = plotlineData.DialogID;
+                                            exportJsonPlotlineData.DialogueAudioName = dialogAudioName;
+                                            exportJsonPlotlineData.ChatContent = plotlineData.DialogID;
+                                            exportJsonPlotlineDataListSingleFile.List[i] = exportJsonPlotlineData;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -331,8 +332,9 @@ public class ExportStep
                 numFailed++;
             }
         }
-        Console.WriteLine("Failed number: {0}",numFailed);
-        Console.WriteLine("Success number: {0}",numSuccess);
+
+        Console.WriteLine("Failed number: {0}", numFailed);
+        Console.WriteLine("Success number: {0}", numSuccess);
 
         var str = JsonConvert.SerializeObject(exportJsonPlotlineDataList, Formatting.Indented);
         File.WriteAllText(Path.Combine(m_JsonResultPath, "PlotLineDataAkaTextMapDataExtract.json"), str);
@@ -343,25 +345,26 @@ public class ExportStep
     {
         var DialogMetaInfo = File.ReadAllText(Path.Combine(m_JsonResultPath, "DialogDataExtract.json"));
         var RandomDialogMetaInfo = File.ReadAllText(Path.Combine(m_JsonResultPath, "RandomDialogDataExtract.json"));
-        var PlotlineMetaInfo = File.ReadAllText(Path.Combine(m_JsonResultPath, "PlotLineDataAkaTextMapDataExtract.json"));
+        var PlotlineMetaInfo =
+            File.ReadAllText(Path.Combine(m_JsonResultPath, "PlotLineDataAkaTextMapDataExtract.json"));
 
         var dialogDataList = JsonConvert.DeserializeObject<ExportJsonDialogDataList>(DialogMetaInfo);
         var randomDialogDataList = JsonConvert.DeserializeObject<ExportJsonRandomDialogDataList>(RandomDialogMetaInfo);
         var plotlineDataList = JsonConvert.DeserializeObject<ExportJsonPlotlineDataList>(PlotlineMetaInfo);
 
-        Dictionary<string, string> audioNameToPathMap=new Dictionary<string, string>();
+        Dictionary<string, string> audioNameToPathMap = new Dictionary<string, string>();
         var audioFiles = Directory.GetFiles(audioExtractionPath);
         foreach (var audioFile in audioFiles)
         {
             if (Path.GetExtension(audioFile) == ".wav")
             {
                 var audioHashName = Path.GetFileNameWithoutExtension(audioFile);
-                audioNameToPathMap.Add(audioHashName,audioFile);
+                audioNameToPathMap.Add(audioHashName, audioFile);
             }
         }
 
         m_AudioResultPath = Path.Combine(m_ResultSavePath, "AudioResult");
-        
+
         ExportJsonAudioTextMapList finalList = new ExportJsonAudioTextMapList();
         finalList.List = new List<ExportJsonAudioTextMap>();
         List<string> auPrefixName = new List<string>()
@@ -389,7 +392,7 @@ public class ExportStep
             bool bFind = false;
             foreach (var auPrefix in auPrefixName)
             {
-                string fullQName = auPrefix + dialog.AudioId+".wem";
+                string fullQName = auPrefix + dialog.AudioId + ".wem";
                 fullQName = fullQName.ToLower();
                 var hash = HashHelper.GetFnv1_64Hash(fullQName);
                 var hashString = hash.ToString("x");
@@ -397,7 +400,7 @@ public class ExportStep
                 if (audioNameToPathMap.ContainsKey(hashString))
                 {
                     ExportJsonAudioTextMap exportJsonAudioTextMap = new ExportJsonAudioTextMap();
-                    exportJsonAudioTextMap.ChatContent = dialog.ChatContent.Count>0?dialog.ChatContent[0]:null;
+                    exportJsonAudioTextMap.ChatContent = dialog.ChatContent.Count > 0 ? dialog.ChatContent[0] : null;
                     exportJsonAudioTextMap.ActorName = dialog.AvatarId;
                     exportJsonAudioTextMap.AudioHashString = hashString;
                     bFind = true;
@@ -410,9 +413,10 @@ public class ExportStep
             {
                 FailedNumber1++;
             }
-        }        
-        Console.WriteLine("Failed number1: {0}",FailedNumber1);
-        Console.WriteLine("Success number1: {0}",SuccessNumber1);
+        }
+
+        Console.WriteLine("Failed number1: {0}", FailedNumber1);
+        Console.WriteLine("Success number1: {0}", SuccessNumber1);
 
         Int32 FailedNumber2 = 0;
         Int32 SuccessNumber2 = 0;
@@ -422,10 +426,11 @@ public class ExportStep
             {
                 continue;
             }
+
             bool bFind = false;
             foreach (var auPrefix in auPrefixName)
             {
-                string fullQName = auPrefix + randomDialog.AudioId +".wem";
+                string fullQName = auPrefix + randomDialog.AudioId + ".wem";
                 fullQName = fullQName.ToLower();
                 var hash = HashHelper.GetFnv1_64Hash(fullQName);
                 var hashString = hash.ToString("x");
@@ -433,23 +438,26 @@ public class ExportStep
                 if (audioNameToPathMap.ContainsKey(hashString))
                 {
                     ExportJsonAudioTextMap exportJsonAudioTextMap = new ExportJsonAudioTextMap();
-                    exportJsonAudioTextMap.ChatContent = randomDialog.ChatContent.Count>0?randomDialog.ChatContent[0]:null;
+                    exportJsonAudioTextMap.ChatContent =
+                        randomDialog.ChatContent.Count > 0 ? randomDialog.ChatContent[0] : null;
                     exportJsonAudioTextMap.ActorName = randomDialog.AvatarName;
                     exportJsonAudioTextMap.AudioHashString = hashString;
-                    
+
                     finalList.List.Add(exportJsonAudioTextMap);
                     bFind = true;
                     SuccessNumber2++;
                     break;
                 }
             }
+
             if (!bFind)
             {
                 FailedNumber2++;
             }
         }
-        Console.WriteLine("Failed number2: {0}",FailedNumber2);
-        Console.WriteLine("Success number2: {0}",SuccessNumber2);
+
+        Console.WriteLine("Failed number2: {0}", FailedNumber2);
+        Console.WriteLine("Success number2: {0}", SuccessNumber2);
 
         Int32 FailedNumber3 = 0;
         Int32 SuccessNumber3 = 0;
@@ -459,10 +467,11 @@ public class ExportStep
             {
                 continue;
             }
+
             bool bFind = false;
             foreach (var auPrefix in auPrefixName)
             {
-                string fullQName = auPrefix + plotlineData.DialogueAudioName+".wem";
+                string fullQName = auPrefix + plotlineData.DialogueAudioName + ".wem";
                 fullQName = fullQName.ToLower();
                 var hash = HashHelper.GetFnv1_64Hash(fullQName);
                 var hashString = hash.ToString("x");
@@ -470,23 +479,26 @@ public class ExportStep
                 if (audioNameToPathMap.ContainsKey(hashString))
                 {
                     ExportJsonAudioTextMap exportJsonAudioTextMap = new ExportJsonAudioTextMap();
-                    exportJsonAudioTextMap.ChatContent = plotlineData.ChatContent.Any()?(plotlineData.ChatContent):"";
+                    exportJsonAudioTextMap.ChatContent =
+                        plotlineData.ChatContent.Any() ? (plotlineData.ChatContent) : "";
                     exportJsonAudioTextMap.ActorName = plotlineData.ActorNameID;
                     exportJsonAudioTextMap.AudioHashString = hashString;
-                    
+
                     finalList.List.Add(exportJsonAudioTextMap);
                     bFind = true;
                     SuccessNumber3++;
                     break;
                 }
             }
+
             if (!bFind)
             {
                 FailedNumber3++;
             }
         }
-        Console.WriteLine("Failed number3: {0}",FailedNumber3);
-        Console.WriteLine("Success number3: {0}",SuccessNumber3);
+
+        Console.WriteLine("Failed number3: {0}", FailedNumber3);
+        Console.WriteLine("Success number3: {0}", SuccessNumber3);
 
         var str = JsonConvert.SerializeObject(finalList, Formatting.Indented);
         File.WriteAllText(Path.Combine(m_JsonResultPath, "FinallMap.json"), str);
